@@ -1,10 +1,29 @@
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { ScrollControls, Scroll, Preload, PerformanceMonitor } from '@react-three/drei';
 import { useAppStore } from '../../stores/useAppStore';
 import { Office } from './Office';
 import { CameraRig } from './CameraRig';
 import { SECTIONS } from '../../lib/constants';
+
+// Calculate pages needed based on screen size
+function useResponsivePages() {
+  const [pages, setPages] = useState<number>(SECTIONS.length);
+
+  useEffect(() => {
+    const updatePages = () => {
+      // On mobile (width < 768px), content needs more scroll space
+      const isMobile = window.innerWidth < 768;
+      setPages(isMobile ? 6 : SECTIONS.length);
+    };
+
+    updatePages();
+    window.addEventListener('resize', updatePages);
+    return () => window.removeEventListener('resize', updatePages);
+  }, []);
+
+  return pages;
+}
 
 // HTML content sections
 import { Hero } from '../sections/Hero';
@@ -36,6 +55,7 @@ function LoadingComplete() {
 
 export function Scene() {
   const { dpr, setDpr, setLoadingProgress } = useAppStore();
+  const pages = useResponsivePages();
 
   return (
     <Canvas
@@ -54,7 +74,7 @@ export function Scene() {
         onIncline={() => setDpr(Math.min(2, dpr + 0.25))}
       />
 
-      <ScrollControls pages={SECTIONS.length} damping={0.25}>
+      <ScrollControls pages={pages} damping={0.25}>
         {/* 3D Scene */}
         <Suspense fallback={null}>
           <SceneContent />
@@ -65,7 +85,7 @@ export function Scene() {
         <Scroll html>
           <div
             className="w-screen"
-            style={{ height: `${SECTIONS.length * 100}vh` }}
+            style={{ height: `${pages * 100}vh` }}
             data-scroll-container
           >
             <Hero />

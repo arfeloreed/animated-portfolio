@@ -4,7 +4,7 @@ import { PERSONAL } from '../../lib/constants';
 
 export function Hero() {
   return (
-    <section className="flex min-h-screen items-center justify-start px-8 md:px-16 lg:px-24">
+    <section className="flex min-h-screen items-end justify-start px-8 pb-8 md:items-center md:px-16 md:pb-0 lg:px-24">
       <GlassCard className="max-w-xl">
         <div className="space-y-6">
           {/* Greeting */}
@@ -14,7 +14,7 @@ export function Hero() {
 
           {/* Name */}
           <h1 className="text-4xl font-bold text-white md:text-5xl lg:text-6xl">
-            Hi, I'm{' '}
+            Hi, I&apos;m{' '}
             <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
               {PERSONAL.name}
             </span>
