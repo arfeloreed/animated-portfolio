@@ -1,8 +1,11 @@
 import { GlassCard } from '../ui/GlassCard';
 import { Button } from '../ui/Button';
 import { PERSONAL } from '../../lib/constants';
+import { useAppStore } from '../../stores/useAppStore';
 
 export function Hero() {
+  const { navigateToSection } = useAppStore();
+
   return (
     <section className="flex min-h-screen items-end justify-start px-8 pb-8 pt-[48vh] md:items-center md:px-16 md:py-0 lg:px-24">
       <GlassCard className="max-w-xl">
@@ -32,18 +35,12 @@ export function Hero() {
 
           {/* CTAs */}
           <div className="flex flex-wrap gap-4 pt-4">
-            <Button
-              onClick={() => {
-                document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
+            <Button onClick={() => navigateToSection("projects")}>
               View My Work
             </Button>
             <Button
               variant="secondary"
-              onClick={() => {
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={() => navigateToSection("contact")}
             >
               Get In Touch
             </Button>

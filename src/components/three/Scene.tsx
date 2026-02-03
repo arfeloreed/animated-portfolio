@@ -4,6 +4,7 @@ import { ScrollControls, Scroll, Preload, PerformanceMonitor } from '@react-thre
 import { useAppStore } from '../../stores/useAppStore';
 import { Office } from './Office';
 import { CameraRig } from './CameraRig';
+import { ScrollController } from './ScrollController';
 import { SECTIONS } from '../../lib/constants';
 
 // Calculate pages needed based on screen size
@@ -77,6 +78,9 @@ export function Scene() {
       />
 
       <ScrollControls pages={pages} damping={0.25}>
+        {/* Scroll Controller for programmatic navigation */}
+        <ScrollController />
+
         {/* 3D Scene */}
         <Suspense fallback={null}>
           <SceneContent />

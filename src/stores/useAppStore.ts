@@ -15,6 +15,11 @@ interface AppState {
   sectionIndex: number;
   setCurrentSection: (section: SectionId) => void;
 
+  // Navigation target (for programmatic scrolling)
+  targetSection: SectionId | null;
+  navigateToSection: (section: SectionId) => void;
+  clearTargetSection: () => void;
+
   // Performance/quality
   qualityTier: QualityTier;
   dpr: number;
@@ -45,6 +50,11 @@ export const useAppStore = create<AppState>((set) => ({
       currentSection,
       sectionIndex: SECTIONS.indexOf(currentSection),
     }),
+
+  // Navigation target
+  targetSection: null,
+  navigateToSection: (targetSection) => set({ targetSection }),
+  clearTargetSection: () => set({ targetSection: null }),
 
   // Quality
   qualityTier: 'high',

@@ -10,7 +10,7 @@ const SECTION_LABELS: Record<SectionId, string> = {
 };
 
 export function Navigation() {
-  const { currentSection, isLoading } = useAppStore();
+  const { currentSection, isLoading, navigateToSection } = useAppStore();
 
   if (isLoading) return null;
 
@@ -32,15 +32,7 @@ export function Navigation() {
 
             {/* Dot indicator */}
             <button
-              onClick={() => {
-                const index = SECTIONS.indexOf(section);
-                const scrollContainer = document.querySelector('[data-scroll-container]');
-                if (scrollContainer) {
-                  const scrollHeight = scrollContainer.scrollHeight - window.innerHeight;
-                  const targetScroll = (index / (SECTIONS.length - 1)) * scrollHeight;
-                  scrollContainer.scrollTo({ top: targetScroll, behavior: 'smooth' });
-                }
-              }}
+              onClick={() => navigateToSection(section)}
               className={cn(
                 'relative h-3 w-3 rounded-full transition-all duration-300',
                 currentSection === section
