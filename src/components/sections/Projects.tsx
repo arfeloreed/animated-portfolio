@@ -4,7 +4,7 @@ import { PROJECTS } from '../../lib/constants';
 
 export function Projects() {
   return (
-    <section className="flex min-h-screen items-center px-8 md:px-16 lg:px-24">
+    <section id="projects" className="flex min-h-screen items-center px-8 md:px-16 lg:px-24">
       <div className="w-full max-w-4xl">
         <GlassCard className="mb-8">
           <p className="text-sm font-medium uppercase tracking-wider text-indigo-400">

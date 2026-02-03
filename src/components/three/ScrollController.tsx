@@ -2,7 +2,21 @@ import { useEffect, useRef } from "react";
 import { useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useAppStore } from "../../stores/useAppStore";
-import { SECTIONS } from "../../lib/constants";
+import { SECTIONS, SectionId } from "../../lib/constants";
+
+function getSectionOffset(sectionId: SectionId, pages: number): number | null {
+  const section = document.getElementById(sectionId);
+  if (!section) return null;
+
+  const sectionTop = section.offsetTop;
+  const viewportHeight = window.innerHeight;
+  const totalScrollableDistance = (pages - 1) * viewportHeight;
+
+  if (totalScrollableDistance <= 0) return 0;
+
+  // Clamp to 0-1 range
+  return Math.min(Math.max(sectionTop / totalScrollableDistance, 0), 1);
+}
 
 export function ScrollController() {
   const scroll = useScroll();
@@ -13,15 +27,14 @@ export function ScrollController() {
   // Handle navigation requests
   useEffect(() => {
     if (targetSection) {
-      const index = SECTIONS.indexOf(targetSection);
-      if (index !== -1) {
-        // Calculate target scroll offset (0 to 1)
-        targetOffset.current = index / (SECTIONS.length - 1);
+      const offset = getSectionOffset(targetSection, scroll.pages);
+      if (offset !== null) {
+        targetOffset.current = offset;
         isAnimating.current = true;
       }
       clearTargetSection();
     }
-  }, [targetSection, clearTargetSection]);
+  }, [targetSection, clearTargetSection, scroll.pages]);
 
   // Animate scroll to target
   useFrame(() => {
@@ -41,9 +54,26 @@ export function ScrollController() {
     }
 
     // Update current section based on scroll position
-    const sectionIndex = Math.round(scroll.offset * (SECTIONS.length - 1));
-    const clampedIndex = Math.max(0, Math.min(sectionIndex, SECTIONS.length - 1));
-    setCurrentSection(SECTIONS[clampedIndex]);
+    // Find which section is closest to current scroll position
+    const viewportHeight = window.innerHeight;
+    const totalScrollableDistance = (scroll.pages - 1) * viewportHeight;
+    const currentScrollPosition = scroll.offset * totalScrollableDistance;
+
+    let closestSection: SectionId = SECTIONS[0];
+    let closestDistance = Infinity;
+
+    for (const sectionId of SECTIONS) {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        const distance = Math.abs(section.offsetTop - currentScrollPosition);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestSection = sectionId;
+        }
+      }
+    }
+
+    setCurrentSection(closestSection);
   });
 
   return null;

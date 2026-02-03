@@ -27,7 +27,7 @@ export function Contact() {
   };
 
   return (
-    <section className="flex min-h-screen items-center justify-center px-8 md:px-16 lg:px-24">
+    <section id="contact" className="flex min-h-screen items-center justify-center px-8 md:px-16 lg:px-24">
       <div className="w-full max-w-2xl">
         <GlassCard>
           <div className="space-y-6">

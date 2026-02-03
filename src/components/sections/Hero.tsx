@@ -7,7 +7,7 @@ export function Hero() {
   const { navigateToSection } = useAppStore();
 
   return (
-    <section className="flex min-h-screen items-end justify-start px-8 pb-8 pt-[48vh] md:items-center md:px-16 md:py-0 lg:px-24">
+    <section id="hero" className="flex min-h-screen items-end justify-start px-8 pb-8 pt-[48vh] md:items-center md:px-16 md:py-0 lg:px-24">
       <GlassCard className="max-w-xl">
         <div className="space-y-6">
           {/* Greeting */}

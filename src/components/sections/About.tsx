@@ -3,7 +3,7 @@ import { SKILLS } from '../../lib/constants';
 
 export function About() {
   return (
-    <section className="flex min-h-screen items-center justify-end px-8 md:px-16 lg:px-24">
+    <section id="about" className="flex min-h-screen items-center justify-end px-8 md:px-16 lg:px-24">
       <GlassCard className="max-w-xl">
         <div className="space-y-6">
           {/* Section label */}
