@@ -24,7 +24,7 @@ export function LoadingScreen() {
       )}
     >
       {/* Spinner */}
-      <div className="relative h-16 w-16">
+      <div className="relative size-16">
         <div className="absolute inset-0 animate-spin rounded-full border-4 border-transparent border-t-indigo-500" />
         <div
           className="absolute inset-2 animate-spin rounded-full border-4 border-transparent border-t-violet-500"

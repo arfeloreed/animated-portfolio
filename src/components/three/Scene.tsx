@@ -12,9 +12,11 @@ function useResponsivePages() {
 
   useEffect(() => {
     const updatePages = () => {
-      // On mobile (width < 768px), content needs more scroll space
+      // Align with Tailwind's md breakpoint (768px) where grid layouts change
+      // Below 768px: Projects uses single column (3 stacked cards = tall)
+      // At 768px+: Projects uses 2-column grid (less vertical space)
       const isMobile = window.innerWidth < 768;
-      setPages(isMobile ? 6 : SECTIONS.length);
+      setPages(isMobile ? 5.1 : SECTIONS.length);
     };
 
     updatePages();
