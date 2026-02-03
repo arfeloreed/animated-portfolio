@@ -1,42 +1,32 @@
-import { useRef } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
-import { useScroll } from '@react-three/drei';
-import * as THREE from 'three';
-import { useAppStore } from '../../stores/useAppStore';
-import { CAMERA_POSITIONS, CAMERA_TARGETS, SECTIONS, SectionId } from '../../lib/constants';
+import { useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
+import * as THREE from "three";
+import { useAppStore } from "../../stores/useAppStore";
+import { CAMERA_POSITIONS, CAMERA_TARGETS, SECTIONS } from "../../lib/constants";
 
 export function CameraRig() {
   const { camera } = useThree();
-  const scroll = useScroll();
-  const { prefersReducedMotion, setCurrentSection } = useAppStore();
+  const { prefersReducedMotion, scrollProgress } = useAppStore();
 
-  const lastSection = useRef<SectionId>('hero');
   const targetPosition = useRef(new THREE.Vector3(...CAMERA_POSITIONS.hero));
   const targetLookAt = useRef(new THREE.Vector3(...CAMERA_TARGETS.hero));
   const currentLookAt = useRef(new THREE.Vector3(...CAMERA_TARGETS.hero));
 
   useFrame((_, delta) => {
-    const offset = scroll.offset;
     const sectionCount = SECTIONS.length;
 
-    // Calculate current section
+    // Calculate current section based on scroll progress
     const sectionIndex = Math.min(
-      Math.floor(offset * sectionCount),
+      Math.floor(scrollProgress * sectionCount),
       sectionCount - 1
     );
     const section = SECTIONS[sectionIndex];
-
-    // Update section in store
-    if (section !== lastSection.current) {
-      lastSection.current = section;
-      setCurrentSection(section);
-    }
 
     // Calculate progress within current section (0-1)
     const sectionSize = 1 / sectionCount;
     const sectionStart = sectionIndex * sectionSize;
     const sectionProgress = Math.min(
-      (offset - sectionStart) / sectionSize,
+      (scrollProgress - sectionStart) / sectionSize,
       1
     );
 

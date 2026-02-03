@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { SectionId, SECTIONS } from '../lib/constants';
 
 type QualityTier = 'low' | 'medium' | 'high';
 
@@ -10,15 +9,9 @@ interface AppState {
   setLoading: (loading: boolean) => void;
   setLoadingProgress: (progress: number) => void;
 
-  // Current section
-  currentSection: SectionId;
-  sectionIndex: number;
-  setCurrentSection: (section: SectionId) => void;
-
-  // Navigation target (for programmatic scrolling)
-  targetSection: SectionId | null;
-  navigateToSection: (section: SectionId) => void;
-  clearTargetSection: () => void;
+  // Scroll progress (0-1) for camera animation
+  scrollProgress: number;
+  setScrollProgress: (progress: number) => void;
 
   // Performance/quality
   qualityTier: QualityTier;
@@ -42,19 +35,9 @@ export const useAppStore = create<AppState>((set) => ({
   setLoading: (isLoading) => set({ isLoading }),
   setLoadingProgress: (loadingProgress) => set({ loadingProgress }),
 
-  // Section
-  currentSection: 'hero',
-  sectionIndex: 0,
-  setCurrentSection: (currentSection) =>
-    set({
-      currentSection,
-      sectionIndex: SECTIONS.indexOf(currentSection),
-    }),
-
-  // Navigation target
-  targetSection: null,
-  navigateToSection: (targetSection) => set({ targetSection }),
-  clearTargetSection: () => set({ targetSection: null }),
+  // Scroll progress
+  scrollProgress: 0,
+  setScrollProgress: (scrollProgress) => set({ scrollProgress }),
 
   // Quality
   qualityTier: 'high',

@@ -1,47 +1,9 @@
-import { Suspense, useEffect, useState } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { ScrollControls, Scroll, Preload, PerformanceMonitor } from '@react-three/drei';
-import { useAppStore } from '../../stores/useAppStore';
-import { Office } from './Office';
-import { CameraRig } from './CameraRig';
-import { ScrollController } from './ScrollController';
-import { SECTIONS } from '../../lib/constants';
-
-// Calculate pages needed based on screen size
-function useResponsivePages() {
-  const [pages, setPages] = useState<number>(SECTIONS.length);
-
-  useEffect(() => {
-    const updatePages = () => {
-      // Align with Tailwind's md breakpoint (768px) where grid layouts change
-      // Below 768px: Projects uses single column (3 stacked cards = tall)
-      // At 768px+: Projects uses 2-column grid (less vertical space)
-      const isMobile = window.innerWidth < 768;
-      setPages(isMobile ? 5.1 : SECTIONS.length);
-    };
-
-    updatePages();
-    window.addEventListener('resize', updatePages);
-    return () => window.removeEventListener('resize', updatePages);
-  }, []);
-
-  return pages;
-}
-
-// HTML content sections
-import { Hero } from '../sections/Hero';
-import { About } from '../sections/About';
-import { Projects } from '../sections/Projects';
-import { Contact } from '../sections/Contact';
-
-function SceneContent() {
-  return (
-    <>
-      <CameraRig />
-      <Office />
-    </>
-  );
-}
+import { Suspense, useEffect } from "react";
+import { Canvas } from "@react-three/fiber";
+import { Preload, PerformanceMonitor } from "@react-three/drei";
+import { useAppStore } from "../../stores/useAppStore";
+import { Office } from "./Office";
+import { CameraRig } from "./CameraRig";
 
 function LoadingComplete() {
   const { setLoading, setLoadingProgress, setSceneReady } = useAppStore();
@@ -58,7 +20,6 @@ function LoadingComplete() {
 
 export function Scene() {
   const { dpr, setDpr, setLoadingProgress } = useAppStore();
-  const pages = useResponsivePages();
 
   return (
     <Canvas
@@ -66,8 +27,9 @@ export function Scene() {
       camera={{ position: [0, 1.5, 4], fov: 50 }}
       gl={{
         antialias: true,
-        powerPreference: 'high-performance',
+        powerPreference: "high-performance",
       }}
+      style={{ pointerEvents: "none" }}
       onCreated={() => {
         setLoadingProgress(20);
       }}
@@ -77,32 +39,12 @@ export function Scene() {
         onIncline={() => setDpr(Math.min(2, dpr + 0.25))}
       />
 
-      <ScrollControls pages={pages} damping={0.25}>
-        {/* Scroll Controller for programmatic navigation */}
-        <ScrollController />
+      <Suspense fallback={null}>
+        <CameraRig />
+        <Office />
+        <Preload all />
+      </Suspense>
 
-        {/* 3D Scene */}
-        <Suspense fallback={null}>
-          <SceneContent />
-          <Preload all />
-        </Suspense>
-
-        {/* HTML Content Overlay */}
-        <Scroll html>
-          <div
-            className="w-screen"
-            style={{ height: `${pages * 100}vh` }}
-            data-scroll-container
-          >
-            <Hero />
-            <About />
-            <Projects />
-            <Contact />
-          </div>
-        </Scroll>
-      </ScrollControls>
-
-      {/* Trigger loading complete after scene mounts */}
       <LoadingComplete />
     </Canvas>
   );
