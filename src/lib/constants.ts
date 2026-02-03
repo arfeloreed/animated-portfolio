@@ -1,29 +1,3 @@
-// Color palette - warm, cozy office aesthetic
-export const COLORS = {
-  // Primary palette
-  primary: '#6366f1', // Indigo
-  secondary: '#8b5cf6', // Violet
-  accent: '#f59e0b', // Amber (warm lamp glow)
-
-  // Background
-  bgDark: '#0f0f1a',
-  bgLight: '#1a1a2e',
-
-  // 3D Scene colors
-  wallColor: '#2a2a3d',
-  floorColor: '#1e1e2f',
-  deskColor: '#4a3728',
-
-  // Text
-  textPrimary: '#f8fafc',
-  textSecondary: '#94a3b8',
-  textMuted: '#64748b',
-
-  // Glass effects
-  glassBg: 'rgba(255, 255, 255, 0.05)',
-  glassBorder: 'rgba(255, 255, 255, 0.1)',
-} as const;
-
 // Section configuration
 export const SECTIONS = ['hero', 'about', 'projects', 'contact'] as const;
 export type SectionId = typeof SECTIONS[number];
@@ -91,13 +65,4 @@ export const SKILLS = {
   frontend: ['React', 'TypeScript', 'Next.js', 'Three.js', 'Tailwind CSS'],
   backend: ['Node.js', 'Python', 'PostgreSQL', 'Redis'],
   tools: ['Git', 'Docker', 'AWS', 'Figma'],
-} as const;
-
-// Performance thresholds
-export const PERFORMANCE = {
-  lowDpr: 1,
-  mediumDpr: 1.5,
-  highDpr: 2,
-  targetFps: 60,
-  minFps: 30,
 } as const;
