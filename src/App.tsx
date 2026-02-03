@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Layout } from "./components/layout/Layout";
 import { Scene } from "./components/three/Scene";
 import { useDeviceCapability } from "./hooks/useDeviceCapability";
-import { useScrollProgress } from "./hooks/useScrollProgress";
+import { useSmoothScroll } from "./hooks/useSmoothScroll";
 import { Hero } from "./components/sections/Hero";
 import { About } from "./components/sections/About";
 import { Projects } from "./components/sections/Projects";
@@ -12,8 +12,8 @@ function App() {
   // Initialize device capability detection
   useDeviceCapability();
 
-  // Track scroll progress for camera animation
-  useScrollProgress();
+  // Initialize Lenis smooth scroll and track progress
+  useSmoothScroll();
 
   // Handle reduced motion preference
   useEffect(() => {
