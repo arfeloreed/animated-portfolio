@@ -14,7 +14,7 @@ export function Projects() {
             Featured Projects
           </h2>
           <p className="mt-2 text-slate-400">
-            A selection of projects I've built with passion and purpose
+            A selection of projects I&apos;ve built with passion and purpose
           </p>
         </GlassCard>
 
@@ -26,6 +26,7 @@ export function Projects() {
               title={project.title}
               description={project.description}
               tech={project.tech}
+              image={project.image}
               link={project.link}
               github={project.github}
             />
