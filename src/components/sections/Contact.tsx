@@ -3,6 +3,13 @@ import { GlassCard } from '../ui/GlassCard';
 import { Button } from '../ui/Button';
 import { PERSONAL } from '../../lib/constants';
 
+const WEB3FORMS_ACCESS_KEY = 'd5d38dce-cefc-4d4d-9baa-772b6267b46e';
+
+interface Web3FormsResponse {
+  success: boolean;
+  message?: string;
+}
+
 export function Contact() {
   const [formState, setFormState] = useState({
     name: '',
@@ -10,20 +17,41 @@ export function Contact() {
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus('idle');
 
-    // Simulate form submission
-    void Promise.resolve()
-      .then(() => new Promise((resolve) => setTimeout(resolve, 1000)))
-      .then(() => {
-        // Reset form
-        setFormState({ name: '', email: '', message: '' });
-        setIsSubmitting(false);
-        alert("Thanks for reaching out! I'll get back to you soon.");
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name: formState.name,
+          email: formState.email,
+          message: formState.message,
+          subject: `Portfolio Contact: ${formState.name}`,
+        }),
       });
+
+      const result = await response.json() as Web3FormsResponse;
+
+      if (result.success) {
+        setSubmitStatus('success');
+        setFormState({ name: '', email: '', message: '' });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch {
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -48,7 +76,7 @@ export function Contact() {
             </p>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4 pt-4">
+            <form onSubmit={(e) => { void handleSubmit(e); }} className="space-y-4 pt-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
                   <label htmlFor="name" className="mb-2 block text-sm text-slate-300">
@@ -100,6 +128,18 @@ export function Contact() {
               <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </Button>
+
+              {submitStatus === 'success' && (
+                <p className="text-center text-sm text-green-400">
+                  Message sent successfully! I&apos;ll get back to you soon.
+                </p>
+              )}
+
+              {submitStatus === 'error' && (
+                <p className="text-center text-sm text-red-400">
+                  Failed to send message. Please try again or email me directly.
+                </p>
+              )}
             </form>
 
             {/* Social links */}
