@@ -39,7 +39,8 @@ export const PROJECTS = [
     description: 'Audio streaming platform with 800+ stories, subscription billing, and community features',
     tech: ['NextJS', 'Python', 'Flask', 'Epoch', 'MySQL', 'AWS'],
     image: '/bks.webp',
-    link: 'https://www.bestkeptsecretaudio.com',
+    // link: 'https://www.bestkeptsecretaudio.com',
+    link: '#',
     github: '#',
   },
   {
@@ -48,7 +49,8 @@ export const PROJECTS = [
     description: 'Community voting platform for users to rank and influence upcoming content releases',
     tech: ['NextJS', 'Python', 'Typescript', 'MySQL', 'AWS'],
     image: '/bks-vote.webp',
-    link: 'https://www.bksaudio.com',
+    // link: 'https://www.bksaudio.com',
+    link: '#',
     github: '#',
   },
   {
