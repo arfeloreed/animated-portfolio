@@ -24,9 +24,11 @@ export const PERSONAL = {
   title: 'Product Engineer',
   subtitle: 'Building digital experiences with code & creativity',
   email: 'hello@example.com',
-  github: 'https://github.com',
-  linkedin: 'https://linkedin.com',
+  github: 'https://github.com/arfeloreed',
+  linkedin: 'https://www.linkedin.com/in/arfeloreed',
   twitter: 'https://twitter.com',
+  facebook: 'https://www.facebook.com/arfeloreed',
+  instagram: 'https://www.instagram.com/reedtorz',
 } as const;
 
 // Projects data
